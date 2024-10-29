@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [\App\Http\Controllers\StaticController::class, 'home'])->name('static.home');
+Route::get('/', [\App\Http\Controllers\StaticController::class, 'home'])->name('welcome');
+
+// TODO: Add Routes for about and contact
 
 Route::get('/dashboard', function () {
     return view('dashboard');
