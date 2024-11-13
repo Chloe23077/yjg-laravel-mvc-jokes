@@ -4,10 +4,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [\App\Http\Controllers\StaticController::class, 'home'])->name('static.home');
+//Route::get('/', [\App\Http\Controllers\StaticController::class, 'home'])->name('static.home');
 Route::get('/', [\App\Http\Controllers\StaticController::class, 'home'])->name('welcome');
+Route::get('/about', [\App\Http\Controllers\StaticController::class, 'about'])->name('about');
+Route::get('/contact', [\App\Http\Controllers\StaticController::class, 'contact'])->name('contact');
 
-// TODO: Add Routes for about and contact
 
 Route::get('/dashboard', function () {
     return view('dashboard');

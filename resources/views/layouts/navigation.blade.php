@@ -34,12 +34,12 @@
 
                 <!-- Right Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('welcome')"
-                                :active="request()->routeIs('welcome')">
+                    <x-nav-link :href="route('about')"
+                                :active="request()->routeIs('about')">
                         {{ __('About') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('welcome')"
-                                :active="request()->routeIs('welcome')">
+                    <x-nav-link :href="route('contact')"
+                                :active="request()->routeIs('contact')">
                         {{ __('Contact') }}
                     </x-nav-link>
                 </div>
@@ -118,10 +118,10 @@
                 <x-responsive-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
                     {{ __('Another Link') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
+                <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
                     {{ __('About') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
+                <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
                     {{ __('Contact') }}
                 </x-responsive-nav-link>
 

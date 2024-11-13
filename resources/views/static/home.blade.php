@@ -56,6 +56,11 @@
                         <h4>
                             Time for a Random Joke
                         </h4>
+                        <div class="flex justify-center my-4">
+                            <a href="{{ route('welcome') }}" class="bg-blue-500 text-white px-6 py-2 rounded-full text-lg hover:bg-blue-600">
+                                New Joke
+                            </a>
+                        </div>
                     </header>
                     <section class="flex-grow flex flex-col space-y-3 text-zinc-600">
                         <p class="">
