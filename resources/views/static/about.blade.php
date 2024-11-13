@@ -29,7 +29,7 @@
                 <section class="border border-2 p-2 text-zinc-500 space-y-2">
                     <header class="-mt-2 -mx-2 mb-4 flex space-x-2 bg-zinc-500 text-zinc-100  items-center">
                         <h4 class="p-2 py-3 text-xl font-medium w-2/3">
-                            LECTURER'S NAME
+                            LECTURER'S NAME - Adrain
                         </h4>
                         <p class="px-2 text-sm text-right grow">
                             Development Supervisor
