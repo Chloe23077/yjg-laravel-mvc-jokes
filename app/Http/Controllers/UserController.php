@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
@@ -12,7 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('user.index');
+        $users = User::paginate(6);
+        return view('users.index', compact(['users',]));
     }
 
     /**
@@ -20,7 +23,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -28,7 +31,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required', 'min:1', 'max:255', 'string',],
+//            'given_name' => ['required', 'min:1', 'max:255', 'string',],
+//            'family_name' => ['sometimes', 'nullable', 'max:255', 'string',],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class,],
+            'password' => ['required', 'confirmed', 'min:4', 'max:255', Rules\Password::defaults(),],
+        ]);
+
+        $user = User::create($validated);
+
+        return redirect(route('users.index'))
+            ->with('success', 'User created');
+
     }
 
     /**
@@ -36,7 +51,8 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::whereId($id)->get()->first();
+        return view('users.show', compact(['user',]));
     }
 
     /**
@@ -44,7 +60,9 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::whereId($id)->get()->first();
+        return view('users.update', compact(['user',]));
+
     }
 
     /**
@@ -52,7 +70,31 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        if (!$request->password) {
+            unset($request['password'], $request['password_confirmation']);
+        }
+
+        $validated = $request->validate([
+            'name' => ['required', 'min:1', 'max:255', 'string',],
+//            'given_name' => ['required', 'min:1', 'max:255', 'string',],
+//            'family_name' => ['sometimes', 'nullable', 'min:1', 'max:255', 'string',],
+            'email' => ['required', 'min:5', 'max:255', 'email', Rule::unique(User::class)->ignore($id),],
+            'password' => ['sometimes', 'required', 'min:4', 'max:255', 'string', 'confirmed',],
+            'password_confirmation' => ['sometimes', 'required_with:password', 'min:4', 'max:255', 'string',],
+        ]);
+
+        $user = User::where('id', '=', $id)->get()->first();
+
+        $user->fill($validated);
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
+
+        return redirect(route('users.show', compact(['user'])))
+            ->with('success', 'User updated');
     }
 
     /**
@@ -60,6 +102,18 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::where('id', '=', $id)->get()->first();
+
+        if (auth()->user()->id !== $user->id) {
+
+            $user->delete();
+
+            return redirect(route('users.index'))
+                ->with('success', 'User deleted');
+
+        }
+
+        return back()
+            ->with('error', 'Cannot delete yourself');
     }
 }

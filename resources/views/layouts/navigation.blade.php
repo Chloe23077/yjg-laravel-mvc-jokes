@@ -28,7 +28,7 @@
                         </x-nav-link>
                         @endauth
                         <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
-                            {{ __('Another Link') }}
+                            {{ __('Home') }}
                         </x-nav-link>
                 </div>
 
@@ -116,7 +116,7 @@
                 </x-responsive-nav-link>
             @endauth
                 <x-responsive-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
-                    {{ __('Another Link') }}
+                    {{ __('Home') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
                     {{ __('About') }}
