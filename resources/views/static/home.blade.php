@@ -64,10 +64,11 @@
                     </header>
                     <section class="flex-grow flex flex-col space-y-3 text-zinc-600">
                         <p class="">
-                            A cowboy butcher decided to relocate his fresh meat shop.
-                        </p>
-                        <p class="">
-                            "Sorry Folks. I'm pullin' up steaks."
+                            @if ($joke)
+                                <strong>{{ $joke->title }}</strong><br>{{ $joke->body }}
+                            @else
+                                No jokes available at the moment.
+                            @endif
                         </p>
                     </section>
                     <footer class="-mx-2 bg-zinc-100 text-zinc-600 text-sm mt-4 -mb-2 rounded-b flex-0">

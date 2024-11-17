@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JokeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,8 @@ Route::get('/about', [\App\Http\Controllers\StaticController::class, 'about'])->
 Route::get('/contact', [\App\Http\Controllers\StaticController::class, 'contact'])->name('contact');
 Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
 Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::get('/jokes/{joke}/edit', [JokeController::class, 'edit'])->name('jokes.edit');
+Route::patch('/jokes/{joke}', [JokeController::class, 'update'])->name('jokes.update');
 
 
 Route::get('/dashboard', function () {
@@ -18,6 +21,7 @@ Route::get('/dashboard', function () {
 
 Route::resource('users', UserController::class);
 //    ->only(['index','edit','update','destroy']);
+Route::resource('jokes', JokeController::class);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
