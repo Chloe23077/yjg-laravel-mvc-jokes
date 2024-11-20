@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
@@ -54,7 +55,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::whereId($id)->get()->first();
-        if (!$user || $user->id != Auth::id()) {
+        if (!$user || (!Auth::user()->can('user read') && $user->id != Auth::id() && !Auth::user()->hasRole('superuser'))) {
             abort(403, 'You do not have permission to show this user details');
         }
 
@@ -67,7 +68,7 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::whereId($id)->get()->first();
-        if (!$user || $user->id != Auth::id()) {
+        if (!$user || (!Auth::user()->can('user edit') && $user->id != Auth::id() && !Auth::user()->hasRole('superuser'))) {
             abort(403, 'You do not have permission to edit this user');
         }
         return view('users.update', compact(['user',]));
@@ -112,7 +113,7 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $user = User::where('id', '=', $id)->get()->first();
-        if (!$user || $user->id != Auth::id()) {
+        if (!$user || (!Auth::user()->can('user delete') && $user->id != Auth::id() && !Auth::user()->hasRole('superuser'))) {
             abort(403, 'You do not have permission to delete this user');
         }
 
@@ -127,5 +128,26 @@ class UserController extends Controller
 
         return back()
             ->with('error', 'Cannot delete yourself');
+    }
+
+    public function editPermissions(User $user)
+    {
+        // Get all the permissions
+        $permissions = Permission::all();
+
+        // return all the permission and the user instance
+        return view('users.permissions', compact('user', 'permissions'));
+
+    }
+
+    public function updatePermissions(Request $request, User $user) {
+        $validateData = $request->validate(['permissions' => 'array']);
+
+        if (Auth::user()->hasRole('superuser')){
+            $user->syncPermissions($validateData['permissions']);
+            return redirect()->route('users.index')->with('success', 'User permission updated successfully');
+        }
+
+        return redirect()->to('/')->with("error", "You dont have the role to Update the User Permissions");
     }
 }

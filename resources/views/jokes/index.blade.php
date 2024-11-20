@@ -6,7 +6,7 @@
         </h2>
     </x-slot>
 
-    @auth
+
     <article class="-mx-4">
         <header
             class="bg-zinc-700 text-zinc-200 rounded-t-lg -mx-4 -mt-8 p-8 text-2xl font-bold flex flex-row items-center">
@@ -99,7 +99,5 @@
 
         </div>
     </article>
-    @else
-        <p class="text-center py-4">You must be logged in to view the jokes list.</p>
-    @endauth
+
 </x-app-layout>

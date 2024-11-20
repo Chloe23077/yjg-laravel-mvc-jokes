@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class UserSeeder extends Seeder
 {
@@ -20,6 +22,7 @@ class UserSeeder extends Seeder
                 'email'=>'admin@example.com',
                 'password'=>'Password1',
                 'email_verified_at'=>now(),
+
 
             ],
 
@@ -38,6 +41,7 @@ class UserSeeder extends Seeder
                 'email'=>'chloe@example.com',
                 'password'=>'Password1',
                 'email_verified_at'=>now(),
+
 
             ],
 
@@ -66,11 +70,28 @@ class UserSeeder extends Seeder
             ],
         ];
 
+        $roles = [
+            100 => 'staff',
+            200 => 'staff',
+            202 => 'superuser',
+            1000 => 'client',
+            1001 => 'client',
+            1002 => 'staff',
+        ];
+
         $numRecords = count($seedData);
         $this->command->getOutput()->progressStart($numRecords);
 
         foreach ($seedData as $newRecord){
-            User::create($newRecord);
+            $user = User::create($newRecord);
+
+            if (isset($roles[$user->id])) {
+                $role = Role::where('name', $roles[$user->id])->first();
+                if ($role) {
+                    $user->assignRole($role);
+                }
+            }
+
             $this->command->getOutput()->progressAdvance();
         }
 
