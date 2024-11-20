@@ -105,11 +105,11 @@ class JokeController extends Controller
 
     public function search(Request $request)
     {
-        $searchTerm = $request->input('search');
+        $keywords = $request->input('keywords');
         $jokes = Joke::query()
-            ->when($searchTerm, function ($query, $searchTerm) {
-                $query->where('id', $searchTerm)
-                ->orWhere('title', 'LIKE', '%' . $searchTerm . '%'); // title로 검색
+            ->when($keywords, function ($query, $keywords) {
+                $query->where('id', 'like', "%{$keywords}%")
+                ->orWhere('title', 'LIKE', "%{$keywords}%");
             })
             ->paginate(6);
         return view('jokes.index', compact(['jokes',]));
