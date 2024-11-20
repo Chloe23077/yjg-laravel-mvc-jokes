@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 
@@ -39,6 +40,7 @@ class UserController extends Controller
             'password' => ['required', 'confirmed', 'min:4', 'max:255', Rules\Password::defaults(),],
         ]);
 
+        $validated['id'] = auth()->id();
         $user = User::create($validated);
 
         return redirect(route('users.index'))
@@ -52,6 +54,10 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::whereId($id)->get()->first();
+        if (!$user || $user->id != Auth::id()) {
+            abort(403, 'You do not have permission to show this user details');
+        }
+
         return view('users.show', compact(['user',]));
     }
 
@@ -61,6 +67,9 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::whereId($id)->get()->first();
+        if (!$user || $user->id != Auth::id()) {
+            abort(403, 'You do not have permission to edit this user');
+        }
         return view('users.update', compact(['user',]));
 
     }
@@ -103,6 +112,9 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $user = User::where('id', '=', $id)->get()->first();
+        if (!$user || $user->id != Auth::id()) {
+            abort(403, 'You do not have permission to delete this user');
+        }
 
         if (auth()->user()->id !== $user->id) {
 

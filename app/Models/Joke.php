@@ -13,6 +13,7 @@ class Joke extends Model
         'title',
         'body',
         'category',
+        'user_id',
     ];
 
 }

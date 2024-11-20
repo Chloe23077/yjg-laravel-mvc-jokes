@@ -23,7 +23,15 @@ Route::get('/dashboard', function () {
 
 Route::resource('users', UserController::class);
 //    ->only(['index','edit','update','destroy']);
+Route::middleware('auth')->group(function () {
+    Route::resource('users', UserController::class)->except(['index', 'show', 'edit', 'update', 'create', 'destroy']);
+});
+
 Route::resource('jokes', JokeController::class);
+Route::middleware('auth')->group(function () {
+    Route::resource('jokes', JokeController::class)->except(['index']);
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -32,3 +40,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+

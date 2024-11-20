@@ -38,6 +38,7 @@ class JokeController extends Controller
             'category' => ['required', 'string', 'max:100'],
         ]);
 
+        $validated['user_id'] = auth()->id();
         $joke = Joke::create($validated);
 
         return redirect(route('jokes.index'))
@@ -50,6 +51,7 @@ class JokeController extends Controller
     public function show(string $id)
     {
         $joke = Joke::whereId($id)->get()->first();
+
         return view('jokes.show', compact(['joke',]));
     }
 
@@ -59,6 +61,9 @@ class JokeController extends Controller
     public function edit(string $id)
     {
         $joke = Joke::whereId($id)->get()->first();
+        if (!$joke || $joke->user_id != Auth::id()) {
+            abort(403, 'You do not have permission to edit this joke');
+        }
         return view('jokes.update', compact(['joke',]));
     }
 
@@ -89,6 +94,9 @@ class JokeController extends Controller
     public function destroy(string $id)
     {
         $joke = Joke::where('id', '=', $id)->get()->first();
+        if (!$joke || $joke->user_id != Auth::id()) {
+            abort(403, 'You do not have permission to delete this joke');
+        }
 
         if (auth()->user()->id !== $joke->id) {
 
