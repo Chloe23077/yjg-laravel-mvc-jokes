@@ -42,9 +42,28 @@
                                 :active="request()->routeIs('contact')">
                         {{ __('Contact') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('users.index')"
+                                :active="request()->routeIs('users')">
+                        {{ __('User') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('jokes.index')"
+                                :active="request()->routeIs('jokes')">
+                        {{ __('Joke') }}
+                    </x-nav-link>
                 </div>
-
             </div>
+
+            <form method="GET" action="{{ route('jokes.search') }}" class="block mx-5">
+                <input type="text" name="keywords" placeholder="Search..."
+                       class="w-full md:w-auto px-4 py-2 focus:outline-none"/>
+                <button class="w-full md:w-auto
+                           bg-sky-500 hover:bg-sky-600
+                           text-white
+                           px-4 py-2
+                           focus:outline-none transition ease-in-out duration-500">
+                    <i class="fa fa-search"></i> Search
+                </button>
+            </form>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">

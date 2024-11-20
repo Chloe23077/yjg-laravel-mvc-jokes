@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Joke;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 
 class JokeController extends Controller
@@ -100,6 +101,18 @@ class JokeController extends Controller
 
         return back()
             ->with('error', 'Cannot delete yourself');
+    }
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search');
+        $jokes = Joke::query()
+            ->when($searchTerm, function ($query, $searchTerm) {
+                $query->where('id', $searchTerm)
+                ->orWhere('title', 'LIKE', '%' . $searchTerm . '%'); // title로 검색
+            })
+            ->paginate(6);
+        return view('jokes.index', compact(['jokes',]));
     }
 
 }
