@@ -21,7 +21,7 @@
 
                 <section class="min-w-full items-center bg-zinc-50 border border-zinc-600 rounded overflow-hidden">
 
-                    <form action="{{ route('users.updatePermissions', $user) }}" method="POST" class="p-6">
+                    <form action="{{ route('users.updatePermissions', ['user' => $user->id]) }}" method="POST" class="p-6">
                         @csrf
 
                         <div class="field mb-4">

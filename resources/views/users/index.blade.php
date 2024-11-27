@@ -21,6 +21,11 @@
                 <i class="fa-solid fa-user-plus "></i>
                 <span class="pl-4">Add User</span>
             </x-primary-link-button>
+            <x-primary-link-button href="{{ route('users.trash') }}"
+                                   class="bg-zinc-200 hover:bg-zinc-900 text-zinc-800 hover:text-white">
+                <i class="fa-solid fa-user-plus "></i>
+                <span class="pl-4">Trash Can</span>
+            </x-primary-link-button>
         </header>
 
         @auth

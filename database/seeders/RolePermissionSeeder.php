@@ -11,29 +11,32 @@ class RolePermissionSeeder extends Seeder
 {
     public function run(): void
     {
-        Permission::create(['name' => 'joke browse']);
-        Permission::create(['name' => 'joke read']);
-        Permission::create(['name' => 'joke add']);
-        Permission::create(['name' => 'joke edit']);
-        Permission::create(['name' => 'joke delete']);
+        Permission::firstOrCreate(['name' => 'joke browse']);
+        Permission::firstOrCreate(['name' => 'joke read']);
+        Permission::firstOrCreate(['name' => 'joke add']);
+        Permission::firstOrCreate(['name' => 'joke edit']);
+        Permission::firstOrCreate(['name' => 'joke delete']);
 
         // user permission
-        Permission::create(['name' => 'user browse']);
-        Permission::create(['name' => 'user read']);
-        Permission::create(['name' => 'user add']);
-        Permission::create(['name' => 'user edit']);
-        Permission::create(['name' => 'user delete']);
+        Permission::firstOrCreate(['name' => 'user browse']);
+        Permission::firstOrCreate(['name' => 'user read']);
+        Permission::firstOrCreate(['name' => 'user add']);
+        Permission::firstOrCreate(['name' => 'user edit']);
+        Permission::firstOrCreate(['name' => 'user delete']);
+        Permission::firstOrCreate(['name' => 'user restore']);
+        Permission::firstOrCreate(['name' => 'user force delete']);
 
         // role
-        $superUser = Role::create(['name' => 'superuser']);
-        $admin = Role::create(['name' => 'admin']);
-        $staff = Role::create(['name' => 'staff']);
-        $client = Role::create(['name' => 'client']);
+        $superUser = Role::firstOrCreate(['name' => 'superuser']);
+        $admin = Role::firstOrCreate(['name' => 'admin']);
+        $staff = Role::firstOrCreate(['name' => 'staff']);
+        $client = Role::firstOrCreate(['name' => 'client']);
 
         $superUser->givePermissionTo(Permission::all());
         $admin->givePermissionTo([
             'joke browse', 'joke add', 'joke edit', 'joke delete',
             'user browse', 'user add', 'user edit', 'user delete',
+            'user restore', 'user force delete',
         ]);
         $staff->givePermissionTo([
             'joke browse', 'joke add', 'joke edit', 'joke delete',

@@ -50,6 +50,11 @@
                                 :active="request()->routeIs('jokes')">
                         {{ __('Joke') }}
                     </x-nav-link>
+                    @if(auth()->check())
+                    <x-nav-link :href="route('users.editPermissions', ['user' => auth()->user()])">
+                        {{ __('Permission') }}
+                    </x-nav-link>
+                        @endif
                 </div>
             </div>
 
@@ -143,8 +148,7 @@
                 <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
                     {{ __('Contact') }}
                 </x-responsive-nav-link>
-
-                @auth
+            @auth
                 @else
                     <x-responsive-nav-link :href="route('login')"
                                            :active="request()->routeIs('login')">
@@ -168,9 +172,6 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
@@ -180,6 +181,9 @@
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
+                        {{ __('Contact') }}
                     </x-responsive-nav-link>
                 </form>
             </div>

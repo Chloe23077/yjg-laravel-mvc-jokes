@@ -123,4 +123,32 @@ class JokeController extends Controller
         return view('jokes.index', compact(['jokes',]));
     }
 
+    public function restore($id) {
+        $joke = Joke::onlyTrashed()->findOrFail($id);
+
+        if ($joke->trashed()) {
+            $joke->restore();
+            return redirect()->route('jokes.index')->with('success', 'Joke restored successfully');
+        }
+
+        return redirect()->route('jokes.trash')->with('error', 'Joke is not in the trash');
+    }
+
+    public function forceDelete($id) {
+        $joke = Joke::withTrashed()->findOrFail($id);
+        $joke->forceDelete();
+//        if ((!Auth::user()->can('user force delete') && $user->id != Auth::id() && !Auth::user()->hasRole('superuser'))) {
+//            abort(403, 'You do not have permission to force delete this user');
+//        }
+
+        return redirect()->route('jokes.trash')->with('success', 'Joke deleted successfully');
+    }
+
+    public function trash() {
+
+        $jokes = Joke::onlyTrashed()->paginate(5);
+
+        return view('jokes.trash', compact('jokes'));
+    }
+
 }

@@ -136,7 +136,7 @@ class UserController extends Controller
         $permissions = Permission::all();
 
         // return all the permission and the user instance
-        return view('users.permissions', compact('user', 'permissions'));
+        return view('users.permissions', compact(['user', 'permissions']));
 
     }
 
@@ -149,5 +149,33 @@ class UserController extends Controller
         }
 
         return redirect()->to('/')->with("error", "You dont have the role to Update the User Permissions");
+    }
+
+    public function restore($id) {
+        $user = User::onlyTrashed()->findOrFail($id);
+
+        if ($user->trashed()) {
+            $user->restore();
+            return redirect()->route('users.index')->with('success', 'User restored successfully');
+        }
+
+        return redirect()->route('jokes.trash')->with('error', 'Joke is not in the trash');
+    }
+
+    public function forceDelete($id) {
+        $user = User::withTrashed()->findOrFail($id);
+        $user->forceDelete();
+//        if ((!Auth::user()->can('user force delete') && $user->id != Auth::id() && !Auth::user()->hasRole('superuser'))) {
+//            abort(403, 'You do not have permission to force delete this user');
+//        }
+
+        return redirect()->route('users.trash')->with('success', 'User deleted successfully');
+    }
+
+    public function trash() {
+
+        $users = User::onlyTrashed()->paginate(5);
+
+        return view('users.trash', compact('users'));
     }
 }
