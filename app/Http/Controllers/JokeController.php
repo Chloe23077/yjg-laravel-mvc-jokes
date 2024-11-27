@@ -111,6 +111,15 @@ class JokeController extends Controller
             ->with('error', 'Cannot delete yourself');
     }
 
+    /**
+     * Search jokes based on keywords.
+     *
+     * Filters jokes by title or ID based on the input keywords
+     * and returns the index view with results.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
+     */
     public function search(Request $request)
     {
         $keywords = $request->input('keywords');
@@ -123,6 +132,15 @@ class JokeController extends Controller
         return view('jokes.index', compact(['jokes',]));
     }
 
+    /**
+     * Restore a soft-deleted joke.
+     *
+     * Restores a joke from the trash and redirects to the index with a
+     * success message.
+     *
+     * @param string $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function restore($id) {
         $joke = Joke::onlyTrashed()->findOrFail($id);
 
@@ -134,6 +152,15 @@ class JokeController extends Controller
         return redirect()->route('jokes.trash')->with('error', 'Joke is not in the trash');
     }
 
+    /**
+     * Permanently delete a joke.
+     *
+     * Force-deletes a joke from the database and redirects to the trash
+     * with a success message.
+     *
+     * @param string $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function forceDelete($id) {
         $joke = Joke::withTrashed()->findOrFail($id);
         $joke->forceDelete();
@@ -144,6 +171,14 @@ class JokeController extends Controller
         return redirect()->route('jokes.trash')->with('success', 'Joke deleted successfully');
     }
 
+    /**
+     * Display a listing of soft-deleted jokes.
+     *
+     * Retrieves and paginates jokes that have been soft-deleted, then
+     * returns the trash view.
+     *
+     * @return \Illuminate\View\View
+     */
     public function trash() {
 
         $jokes = Joke::onlyTrashed()->paginate(5);

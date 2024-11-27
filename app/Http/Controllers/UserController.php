@@ -13,6 +13,7 @@ class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
      */
     public function index()
     {
@@ -130,6 +131,12 @@ class UserController extends Controller
             ->with('error', 'Cannot delete yourself');
     }
 
+    /**
+     * Show the form for editing a user's permissions.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\View\View
+     */
     public function editPermissions(User $user)
     {
         // Get all the permissions
@@ -140,6 +147,13 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Update a user's permissions.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updatePermissions(Request $request, User $user) {
         $validateData = $request->validate(['permissions' => 'array']);
 
@@ -151,6 +165,12 @@ class UserController extends Controller
         return redirect()->to('/')->with("error", "You dont have the role to Update the User Permissions");
     }
 
+    /**
+     * Restore a soft-deleted user.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function restore($id) {
         $user = User::onlyTrashed()->findOrFail($id);
 
@@ -162,6 +182,12 @@ class UserController extends Controller
         return redirect()->route('jokes.trash')->with('error', 'Joke is not in the trash');
     }
 
+    /**
+     * Permanently delete a user from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function forceDelete($id) {
         $user = User::withTrashed()->findOrFail($id);
         $user->forceDelete();
@@ -172,6 +198,11 @@ class UserController extends Controller
         return redirect()->route('users.trash')->with('success', 'User deleted successfully');
     }
 
+    /**
+     * Display a list of soft-deleted users.
+     *
+     * @return \Illuminate\View\View
+     */
     public function trash() {
 
         $users = User::onlyTrashed()->paginate(5);
