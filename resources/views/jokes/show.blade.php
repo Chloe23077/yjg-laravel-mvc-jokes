@@ -42,7 +42,7 @@
                                 <p class="col-span-1 bg-zinc-300 whitespace-nowrap px-6 py-4 border-b border-zinc-200 dark:border-white/10">Title</p>
                                 <p class="col-span-5 whitespace-nowrap px-6 py-4 border-b border-zinc-200 dark:border-white/10">{{ $joke->title }}</p>
                                 <p class="col-span-1 bg-zinc-300 whitespace-nowrap px-6 py-4 border-b border-zinc-200 dark:border-white/10">Category</p>
-                                <p class="col-span-5 whitespace-nowrap px-6 py-4 border-b border-zinc-200 dark:border-white/10">{{ $joke->category }}</p>
+                                <p class="col-span-5 whitespace-nowrap px-6 py-4 border-b border-zinc-200 dark:border-white/10">{{ $joke->category->name }}</p>
                                 <p class="col-span-1 bg-zinc-300 whitespace-nowrap px-6 py-4 border-b border-zinc-200 dark:border-white/10">Body</p>
                                 <p class="col-span-5 px-6 py-4 border-b border-zinc-200 dark:border-white/10 break-words whitespace-normal">{{ $joke->body }}</p>
                             </section>

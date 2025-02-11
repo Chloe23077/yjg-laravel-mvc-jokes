@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\JokeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -15,6 +16,7 @@ Route::get('/jokes', [\App\Http\Controllers\JokeController::class, 'jokes'])->na
 Route::get('/jokes/{joke}/edit', [JokeController::class, 'edit'])->name('jokes.edit');
 Route::patch('/jokes/{joke}', [JokeController::class, 'update'])->name('jokes.update');
 Route::get('jokes/search', [JokeController::class, 'search'])->name('jokes.search');
+Route::get('jokes/create', [CategoryController::class, 'index'])->name('jokes.create');
 
 Route::get('/users', [\App\Http\Controllers\UserController::class, 'users'])->name('users.index');
 Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');

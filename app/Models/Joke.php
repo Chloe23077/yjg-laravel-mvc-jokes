@@ -16,8 +16,13 @@ class Joke extends Model
     protected $fillable = [
         'title',
         'body',
-        'category',
+        'category_id',
         'user_id',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
 }

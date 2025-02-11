@@ -34,9 +34,9 @@ class RoleController extends Controller
             'password' => bcrypt($validated['password']),
         ]);
 
-        $user->synRoles($validated['roles']);
+        $user->syncRoles($validated['roles']);
 
-        return redirect()->route('roles.index')
+        return redirect()->route('users.index')
             ->with('success','Role created successfully.');
     }
 

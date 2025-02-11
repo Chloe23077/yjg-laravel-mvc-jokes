@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Joke;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -24,7 +25,9 @@ class JokeController extends Controller
      */
     public function create()
     {
-        return view('jokes.create');
+        $categories = Category::all();
+
+        return view('jokes.create', compact('categories'));
     }
 
     /**
@@ -35,8 +38,11 @@ class JokeController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'max:255', 'string',],
             'body' => ['required', 'string',],
-            'category' => ['required', 'string', 'max:100'],
+            'category' => ['required', 'exists:categories,id'],
         ]);
+
+        $validated['category_id'] = $validated['category'];
+        unset($validated['category']);
 
         $validated['user_id'] = auth()->id();
         $joke = Joke::create($validated);
@@ -64,11 +70,12 @@ class JokeController extends Controller
         if (!$joke || (!Auth::user()->can('joke edit') && $joke->user_id != Auth::id() && !Auth::user()->hasRole('superuser'))) {
             abort(403, 'You do not have permission to edit this joke');
         }
+        $categories = Category::all();
 //        if (!$joke ||
 //            (!Auth::user()->can('joke edit') && $joke->user_id != Auth::id() && !Auth::user()->hasRole('superuser'))) {
 //            abort(403, 'You do not have permission to edit this joke');
 //        }
-        return view('jokes.update', compact(['joke',]));
+        return view('jokes.update', compact(['joke', 'categories']));
     }
 
     /**
@@ -84,13 +91,32 @@ class JokeController extends Controller
 
         $joke = Joke::where('id', '=', $id)->get()->first();
 
-        $joke->fill($validated);
+        $joke->category_id = $validated['category'];
+        $joke->title = $validated['title'];
+        $joke->body = $validated['body'];
 
         $joke->save();
 
         return redirect(route('jokes.show', compact(['joke'])))
             ->with('success', 'Joke updated');
     }
+//    public function update(Request $request, string $id)
+//    {
+//        $validated = $request->validate([
+//            'title' => ['required', 'max:255', 'string',],
+//            'body' => ['required', 'string',],
+//            'category' => ['required', 'string', 'max:100'],
+//        ]);
+//
+//        $joke = Joke::where('id', '=', $id)->get()->first();
+//
+//        $joke->fill($validated);
+//
+//        $joke->save();
+//
+//        return redirect(route('jokes.show', compact(['joke'])))
+//            ->with('success', 'Joke updated');
+//    }
 
     /**
      * Remove the specified resource from storage.

@@ -53,7 +53,7 @@
                             <tr class="border-b border-zinc-300 dark:border-white/10">
                                 <td class="whitespace-nowrap px-6 py-4 font-medium">{{ $loop->index + 1 }}</td>
                                 <td class="whitespace-nowrap px-6 py-4">{{ $joke->title }}</td>
-                                <td class="whitespace-nowrap px-6 py-4 w-full">{{ $joke->category }}</td>
+                                <td class="whitespace-nowrap px-6 py-4 w-full">{{ $joke->category->name}}</td>
                                 <td class="whitespace-nowrap px-6 py-4">
                                     <form action="{{ route('jokes.destroy', $joke) }}"
                                           method="POST"

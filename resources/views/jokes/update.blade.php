@@ -62,30 +62,28 @@
                                     <x-text-input id="body" name="body" value="{{ old('body') ?? $joke->body }}"/>
 {{--                                    <x-input-error :messages="1" class="mt-2"/>--}}
                                 </div>
-
-{{--                                <div class="flex flex-col my-2">--}}
-{{--                                    <x-input-label for="category">--}}
-{{--                                        Category--}}
-{{--                                    </x-input-label>--}}
-{{--                                    <x-text-input id="category" name="category" value="{{ old('category') ?? $joke->category }}"/>--}}
-{{--                                    <x-input-error :messages="1" class="mt-2"/>--}}
-{{--                                </div>--}}
                                 <div class="flex flex-col my-2">
                                     <x-input-label for="category">Category</x-input-label>
-
-                                    <div class="mt-2">
-                                        @foreach(['Other/Misc', 'Knock-Knock', 'Lightbulb', 'Animal', 'Puns', 'Lawyer', 'One Liners'] as $category)
-                                            <label class="inline-flex items-center">
-                                                <input type="radio" name="category" value="{{ $category }}"
-                                                       class="form-radio"
-                                                    {{ (old('category', $joke->category) == $category) ? 'checked' : '' }}>
-                                                <span class="ml-2">{{ $category }}</span>
-                                            </label>
+                                    <select name="category" id="category" class="form-select">
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}"
+                                                    @if($joke->category_id == $category->id) selected @endif>
+                                                {{ $category->name }}
+                                            </option>
                                         @endforeach
-                                    </div>
-
+                                    </select>
                                     <x-input-error :messages="$errors->get('category')" class="mt-2"/>
                                 </div>
+
+                                {{--                                <div class="flex flex-col my-2">--}}
+{{--                                    <x-input-label for="category">Category</x-input-label>--}}
+{{--                                    <select name="category" id="category" class="form-select">--}}
+{{--                                        @foreach ($categories as $category)--}}
+{{--                                            <option value="{{ $category->id }}">{{ $category->name }}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
+{{--                                    <x-input-error :messages="$errors->get('category')" class="mt-2"/>--}}
+{{--                                </div>--}}
 
                             </section>
 

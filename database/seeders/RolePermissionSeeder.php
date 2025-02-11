@@ -46,7 +46,8 @@ class RolePermissionSeeder extends Seeder
         $client->givePermissionTo([
             'joke browse', 'joke add',
         ]);
-        $client->givePermissionTo([
+
+        $guest->givePermissionTo([
 
         ]);
 
