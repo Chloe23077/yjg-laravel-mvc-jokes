@@ -94,6 +94,21 @@
                                     <x-text-input id="password_confirmation" name="password_confirmation"/>
                                     <x-input-error :messages="$errors->get('password')" class="mt-2"/>
                                 </div>
+
+                                <div class="flex flex-col my-2">
+                                    <x-input-label for="roles">
+                                        Roles
+                                    </x-input-label>
+                                    <select id="roles" name="roles[]" class="form-select">
+                                        @foreach($roles as $role)
+                                            <option value="{{ $role->name }}" {{ in_array($role->name, old('roles', [])) ? 'selected' : '' }}>
+                                                {{ $role->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    <x-input-error :messages="$errors->get('roles')" class="mt-2"/>
+                                </div>
                             </section>
 
                             <footer

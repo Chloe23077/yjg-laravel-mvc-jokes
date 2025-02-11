@@ -64,6 +64,10 @@ class JokeController extends Controller
         if (!$joke || (!Auth::user()->can('joke edit') && $joke->user_id != Auth::id() && !Auth::user()->hasRole('superuser'))) {
             abort(403, 'You do not have permission to edit this joke');
         }
+//        if (!$joke ||
+//            (!Auth::user()->can('joke edit') && $joke->user_id != Auth::id() && !Auth::user()->hasRole('superuser'))) {
+//            abort(403, 'You do not have permission to edit this joke');
+//        }
         return view('jokes.update', compact(['joke',]));
     }
 
@@ -94,9 +98,12 @@ class JokeController extends Controller
     public function destroy(string $id)
     {
         $joke = Joke::where('id', '=', $id)->get()->first();
-        if (!$joke || (!Auth::user()->can('joke delete') && $joke->user_id != Auth::id() && !(Auth::user()->hasRole('superuser') || !Auth::user()->hasRole('staff')))) {
+        if (!$joke || (!Auth::user()->can('joke delete') && $joke->user_id != Auth::id() && !Auth::user()->hasRole('superuser'))) {
             abort(403, 'You do not have permission to delete this joke');
         }
+//        if (!$joke || (!Auth::user()->can('joke delete') && $joke->user_id != Auth::id() && !(Auth::user()->hasRole('superuser') || !Auth::user()->hasRole('staff')))) {
+//            abort(403, 'You do not have permission to delete this joke');
+//        }
 
         if (auth()->user()->id !== $joke->id) {
 

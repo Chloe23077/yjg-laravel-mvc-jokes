@@ -31,6 +31,7 @@ class RolePermissionSeeder extends Seeder
         $admin = Role::firstOrCreate(['name' => 'admin']);
         $staff = Role::firstOrCreate(['name' => 'staff']);
         $client = Role::firstOrCreate(['name' => 'client']);
+        $guest = Role::firstOrCreate(['name' => 'guest']);
 
         $superUser->givePermissionTo(Permission::all());
         $admin->givePermissionTo([
@@ -43,7 +44,10 @@ class RolePermissionSeeder extends Seeder
             'user browse'
         ]);
         $client->givePermissionTo([
-            'joke browse', 'joke add', 'joke edit', 'joke delete'
+            'joke browse', 'joke add',
+        ]);
+        $client->givePermissionTo([
+
         ]);
 
     }

@@ -165,6 +165,8 @@ class UserController extends Controller
         return redirect()->to('/')->with("error", "You dont have the role to Update the User Permissions");
     }
 
+
+
     /**
      * Restore a soft-deleted user.
      *

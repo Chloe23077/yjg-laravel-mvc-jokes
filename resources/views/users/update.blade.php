@@ -93,6 +93,24 @@
                                     <x-text-input id="password_confirmation" name="password_confirmation"/>
 {{--                                    <x-input-error :messages="1" class="mt-2"/>--}}
                                 </div>
+
+                                <div class="flex flex-col my-2">
+                                    <x-input-label for="roles">
+                                        Roles
+                                    </x-input-label>
+                                    <select id="roles" name="roles[]" class="form-select">
+                                        @foreach($roles as $role)
+                                            <option value="{{ $role->name }}"
+                                                    @if(in_array($role->name, $user->roles->pluck('name')->toArray()) || (count($user->roles) == 0 && $role->name == 'guest'))
+                                                        selected
+                                                @endif>
+                                                {{ $role->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    <x-input-error :messages="$errors->get('roles')" class="mt-2"/>
+                                </div>
                             </section>
 
                             <footer

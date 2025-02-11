@@ -3,6 +3,7 @@
 use App\Http\Controllers\JokeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 
 //Route::get('/', [\App\Http\Controllers\StaticController::class, 'home'])->name('static.home');
@@ -53,6 +54,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('users/{user}/permissions', [UserController::class, 'editPermissions'])->name('users.editPermissions');
     Route::post('users/{user}/permissions', [UserController::class, 'updatePermissions'])->name('users.updatePermissions');
+
+    Route::get('users/create', [RoleController::class, 'create'])->name('users.create');
+    Route::post('users', [RoleController::class, 'store'])->name('users.store');
+    Route::get('/users/{user}/edit', [RoleController::class, 'edit'])->name('users.edit');
+    Route::patch('/users/{user}', [RoleController::class, 'update'])->name('users.update');
+
 });
 
 
