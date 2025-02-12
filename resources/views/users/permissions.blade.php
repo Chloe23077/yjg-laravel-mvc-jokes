@@ -23,6 +23,7 @@
 
                     <form action="{{ route('users.updatePermissions', ['user' => $user->id]) }}" method="POST" class="p-6">
                         @csrf
+                        @method('PUT')
 
                         <div class="field mb-4">
                             <label class="tag is-info">{{ $user->name }}</label>

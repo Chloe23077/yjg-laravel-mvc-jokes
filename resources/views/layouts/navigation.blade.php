@@ -50,6 +50,9 @@
                                 :active="request()->routeIs('jokes')">
                         {{ __('Joke') }}
                     </x-nav-link>
+{{--                    <x-nav-link :href="route('users.editPermissions')">--}}
+{{--                        {{ __('Permission') }}--}}
+{{--                    </x-nav-link>--}}
                     @if(auth()->check())
                     <x-nav-link :href="route('users.editPermissions', ['user' => auth()->user()])">
                         {{ __('Permission') }}

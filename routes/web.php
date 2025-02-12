@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('users/{user}/permissions', [UserController::class, 'editPermissions'])->name('users.editPermissions');
-    Route::post('users/{user}/permissions', [UserController::class, 'updatePermissions'])->name('users.updatePermissions');
+    Route::put('users/{user}/permissions', [UserController::class, 'updatePermissions'])->name('users.updatePermissions');
 
     Route::get('users/create', [RoleController::class, 'create'])->name('users.create');
     Route::post('users', [RoleController::class, 'store'])->name('users.store');
@@ -63,6 +63,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/users/{user}', [RoleController::class, 'update'])->name('users.update');
 
 });
+
+
 
 
 require __DIR__.'/auth.php';

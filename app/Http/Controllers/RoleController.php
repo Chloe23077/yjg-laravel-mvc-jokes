@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
@@ -44,7 +45,9 @@ class RoleController extends Controller
     {
         $user = User::findOrFail($id);
         $roles = Role::all();
-
+        if (!$user || (!Auth::user()->can('user edit') && $user->id != Auth::id() && !Auth::user()->hasRole('superuser'))) {
+            abort(403, 'You do not have permission to edit this user');
+        }
         return view('users.update', compact('user', 'roles'));
     }
 

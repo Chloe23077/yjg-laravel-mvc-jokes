@@ -26,6 +26,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        if ((!Auth::user()->can('user add') && !Auth::user()->hasAnyRole('superuser', 'admin'))) {
+            abort(403, 'You do not have permission to edit this user');
+        }
         return view('users.create');
     }
 
@@ -139,12 +142,12 @@ class UserController extends Controller
      */
     public function editPermissions(User $user)
     {
+
         // Get all the permissions
         $permissions = Permission::all();
 
         // return all the permission and the user instance
         return view('users.permissions', compact(['user', 'permissions']));
-
     }
 
     /**
@@ -157,12 +160,9 @@ class UserController extends Controller
     public function updatePermissions(Request $request, User $user) {
         $validateData = $request->validate(['permissions' => 'array']);
 
-        if (Auth::user()->hasRole('superuser')){
-            $user->syncPermissions($validateData['permissions']);
-            return redirect()->route('users.index')->with('success', 'User permission updated successfully');
-        }
+        $user->syncPermissions($validateData['permissions'] ?? []);
 
-        return redirect()->to('/')->with("error", "You dont have the role to Update the User Permissions");
+        return redirect()->route('users.index')->with('success', 'User permission updated successfully');
     }
 
 
