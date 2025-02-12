@@ -57,7 +57,7 @@
                                 <td class="whitespace-nowrap px-6 py-4 w-full">{{ $user->email }}</td>
                                 <td class="whitespace-nowrap px-6 py-4">
                                     <span
-                                        class="text-xs text-white bg-zinc-500 px-1 rounded-full min-w-12 inline-block text-center">User</span>
+                                        class="text-xs text-white bg-zinc-500 px-1 rounded-full min-w-12 inline-block text-center">{{ $user->roles->first()->name}}</span>
                                 </td>
                                 <td class="whitespace-nowrap px-6 py-4">
                                     <form action="{{ route('users.destroy', $user) }}"
